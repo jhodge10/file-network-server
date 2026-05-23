@@ -3,7 +3,7 @@ import json
 
 def send_json(socket_object, data):
     """
-    Convert dictionary to JSON and send it.
+    Send dictionary as JSON.
     """
 
     json_data = json.dumps(data)
@@ -13,9 +13,30 @@ def send_json(socket_object, data):
 
 def receive_json(socket_object):
     """
-    Receive JSON data and convert it to dictionary.
+    Receive JSON and convert to dictionary.
     """
 
     json_data = socket_object.recv(1024).decode()
 
     return json.loads(json_data)
+
+
+def receive_file(socket_object, filename, filesize):
+    """
+    Receive file bytes and save file.
+    """
+
+    with open(filename, "wb") as file:
+
+        bytes_received = 0
+
+        while bytes_received < filesize:
+
+            chunk = socket_object.recv(1024)
+
+            if not chunk:
+                break
+
+            file.write(chunk)
+
+            bytes_received += len(chunk)

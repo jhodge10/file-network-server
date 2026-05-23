@@ -1,9 +1,12 @@
 import socket
+import os
 
 from protocol import send_json, receive_json
 
 HOST = "127.0.0.1"
 PORT = 5000
+
+FILE_TO_UPLOAD = "test_upload.txt"
 
 # Create TCP socket
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -13,37 +16,52 @@ client_socket.connect((HOST, PORT))
 
 print("Connected to server.")
 
-# Create LIST request
+# Get file size
+filesize = os.path.getsize(FILE_TO_UPLOAD)
+
+# Create upload request
 request = {
-    "action": "LIST"
+    "action": "UPLOAD",
+    "filename": FILE_TO_UPLOAD,
+    "filesize": filesize
 }
 
-# Send request
+# Send upload metadata
 send_json(client_socket, request)
 
-print("Requested file list.")
+print("Upload request sent.")
 
-# Receive server response
+# Wait for READY response
 response = receive_json(client_socket)
 
-# Display files
-if response["status"] == "OK":
+if response["status"] == "READY":
 
-    print("\nAvailable Files:")
+    print("Server ready. Uploading file...")
 
-    files = response["files"]
+    # Send file bytes
+    with open(FILE_TO_UPLOAD, "rb") as file:
 
-    if len(files) == 0:
-        print("No files available.")
+        while True:
 
-    else:
-        for file_name in files:
-            print(f"- {file_name}")
+            chunk = file.read(1024)
+
+            if not chunk:
+                break
+
+            client_socket.send(chunk)
+
+    print("File upload complete.")
+
+    # Receive final response
+    final_response = receive_json(client_socket)
+
+    print(final_response["message"])
 
 else:
-    print("Error:", response["message"])
+
+    print("Upload failed.")
 
 # Close connection
 client_socket.close()
 
-print("\nConnection closed.")
+print("Connection closed.")
