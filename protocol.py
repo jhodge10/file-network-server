@@ -40,3 +40,20 @@ def receive_file(socket_object, filename, filesize):
             file.write(chunk)
 
             bytes_received += len(chunk)
+
+
+def send_file(socket_object, filename):
+    """
+    Send file bytes over socket.
+    """
+
+    with open(filename, "rb") as file:
+
+        while True:
+
+            chunk = file.read(1024)
+
+            if not chunk:
+                break
+
+            socket_object.send(chunk)
