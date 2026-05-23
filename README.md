@@ -16,19 +16,17 @@ The format of messages sent is by files that are uplaoded and downloaded between
 
 # Development Environment
 
-{Tools that were used include Virtual Machine Oracle Box (That did not end up being used in the final post), Git, Python, and VS Code}
+Tools that were used include Virtual Machine Oracle Box (That did not end up being used in the final post), Git, Python, and VS Code
 
-{The language used on this project was Python.}
+The language used on this project was Python.
 
 # Useful Websites
 
-{Make a list of websites that you found helpful in this project}
 * [Python TCP Server](https://medium.com/@mando_elnino/python-tcp-server-b945c68a983c)
 * [Python HTTP servers](https://docs.python.org/3/library/http.server.html)
 
 # Future Work
 
-{Make a list of things that you need to fix, improve, and add in the future.}
 * I would like to improve the style of the server when someone accesses it. I want it to be on a web app and be able to style the look how I want.
 * I would like to add a database to this as well. I want there to be information that is stored and saved across the server for anyone to be able to see and access other than the program.
 * I want this to be easy to access rather than having to clone Github and setup like that. I want a server that starts up once the web app is started that closes when no one is using the site.
